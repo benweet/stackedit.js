@@ -29,7 +29,7 @@ class Stackedit {
   options = {};
   open = false;
 
-  constructor(opts) {
+  constructor(opts = {}) {
     // Override options
     Object.keys(opts).forEach((key) => {
       this.options[key] = opts[key];
@@ -37,6 +37,7 @@ class Stackedit {
   }
 
   open() {
+    // Close before opening a new iframe
     this.close();
   }
 
@@ -47,4 +48,4 @@ class Stackedit {
   }
 }
 
-export default Stackedit;
+module.exports = Stackedit;

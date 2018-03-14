@@ -1,0 +1,21 @@
+---
+---
+
+@import "{{ site.theme }}";
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+body {
+  font-family: 'Lato', sans-serif;
+}
+
+.page-header {
+  background: #2c2c2c;
+
+  &::before {
+    content: '';
+    display: block;
+    background: no-repeat center url('../../icon.svg');
+    background-size: contain;
+    height: 110px;
+  }
+}

@@ -2,11 +2,11 @@
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define("stackedit", [], factory);
+		define("Stackedit", [], factory);
 	else if(typeof exports === 'object')
-		exports["stackedit"] = factory();
+		exports["Stackedit"] = factory();
 	else
-		root["stackedit"] = factory();
+		root["Stackedit"] = factory();
 })(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -80,10 +80,6 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -94,8 +90,10 @@ style.innerHTML = '\n.stackedit-iframe-open {\n  overflow: hidden;\n}\n\n.stacke
 document.head.appendChild(style);
 
 var Stackedit = function () {
-  function Stackedit(opts) {
+  function Stackedit() {
     var _this = this;
+
+    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     _classCallCheck(this, Stackedit);
 
@@ -111,20 +109,22 @@ var Stackedit = function () {
   _createClass(Stackedit, [{
     key: 'open',
     value: function open() {
+      // Close before opening a new iframe
       this.close();
     }
   }, {
     key: 'close',
     value: function close() {
-      if (this.open) {}
+      if (this.open) {
+        // do close
+      }
     }
   }]);
 
   return Stackedit;
 }();
 
-exports.default = Stackedit;
-module.exports = exports['default'];
+module.exports = Stackedit;
 
 /***/ })
 /******/ ]);

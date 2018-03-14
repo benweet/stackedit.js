@@ -12,6 +12,8 @@ function configureTextarea(el) {
   });
   el.parentNode.insertBefore(div, el.nextSibling);
 }
+
+const stackedit = new Stackedit();
 </script>
 
 <textarea class="case1"></textarea>
