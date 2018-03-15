@@ -4,8 +4,15 @@
   "description": "Produce universal library with webpack and es6",
   "main": "docs/lib/stackedit.js",
   "scripts": {
+    "lint": "eslint --ext .js src",
     "build": "webpack --env dev && webpack --env build",
-    "dev": "webpack --progress --colors --watch --env dev"
+    "dev": "webpack --progress --colors --watch --env dev",
+    "test": "npm run lint",
+    "preversion": "npm run test",
+    "postversion": "git push origin master --tags && npm publish",
+    "patch": "npm version patch -m \"Tag v%s\"",
+    "minor": "npm version minor -m \"Tag v%s\"",
+    "major": "npm version major -m \"Tag v%s\""
   },
   "author": "Benoit Schweblin",
   "license": "MIT",
