@@ -35,13 +35,6 @@ const styleContent = `
   overflow: hidden;
 }
 
-.stackedit-iframe {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  border: 0;
-}
-
 @media (max-width: 920px) {
   .stackedit-iframe-container {
     width: 95%;
@@ -54,6 +47,13 @@ const styleContent = `
     width: 100%;
     border-radius: 0;
   }
+}
+
+.stackedit-iframe {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border: 0;
 }
 
 .stackedit-close-button {
@@ -161,8 +161,8 @@ class Stackedit {
     document.body.appendChild(this.$containerEl);
 
     // Load StackEdit in the iframe
-    this.$iframeEl = this.$containerEl.querySelector('iframe');
-    this.$iframeEl.src = urlParser.href;
+    const iframeEl = this.$containerEl.querySelector('iframe');
+    iframeEl.src = urlParser.href;
 
     // Add close button handler
     const closeButton = this.$containerEl.querySelector('a');
@@ -170,10 +170,10 @@ class Stackedit {
 
     // Add message handler
     this.$messageHandler = (event) => {
-      if (event.origin === this.$origin && event.source === this.$iframeEl.contentWindow) {
+      if (event.origin === this.$origin && event.source === iframeEl.contentWindow) {
         switch (event.data.type) {
           case 'ready':
-            // Remove close button as Stackedit has its own one
+            // StackEdit has its own one close button
             closeButton.parentNode.removeChild(closeButton);
             break;
           case 'fileChange':
@@ -206,7 +206,6 @@ class Stackedit {
       // Release memory
       this.$messageHandler = null;
       this.$containerEl = null;
-      this.$iframeEl = null;
 
       // Restore body scrollbars
       document.body.className = document.body.className.replace(/\sstackedit-no-overflow\b/, '');
