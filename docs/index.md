@@ -48,7 +48,7 @@ To open StackEdit, create a `Stackedit` object and call `openFile()`.
     }
   });
 
-  // Listen to StackEdit and apply the changes to the textarea.
+  // Listen to StackEdit events and apply the changes to the textarea.
   stackedit.on('fileChange', (file) => {
     el.value = file.content.text;
   });
@@ -66,7 +66,7 @@ To open StackEdit, create a `Stackedit` object and call `openFile()`.
 
 ## Conversion service
 
-Duly sanitized HTML will be returned as `file.content.html` in the `fileChange` event, so that you can print the formatted output into your page.
+Duly sanitized HTML will be returned as `file.content.html` in the `fileChange` event so that you can print the formatted output into your page.
 
 > <div class="html"></div>
 
@@ -86,22 +86,26 @@ stackedit.on('fileChange', (file) => {
 
 ## Custom properties
 
-Pass YAML properties to enable/disable extensions. GFM as an example:
+Pass YAML properties to enable/disable Markdown extensions. To open a CommonMark file for example:
 
 ```javascript
 stackedit.openFile({
   name: 'Filename',
   content: {
-    text: 'Hello **Markdown** writer!',
+    text: 'Hello **CommonMark** writer!',
     yamlProperties: `
 
 extensions:
   markdown:
     abbr: false
+    breaks: false
     deflist: false
+    del: false
     footnote: false
+    linkify: false
     sub: false
     sup: false
+    table: false
     typographer: false
   katex:
     enabled: false
