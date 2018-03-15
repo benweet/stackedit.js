@@ -1,8 +1,8 @@
 {
   "name": "stackedit-js",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Produce universal library with webpack and es6",
-  "main": "lib/stackedit-js.js",
+  "main": "docs/lib/stackedit.js",
   "scripts": {
     "build": "webpack --env dev && webpack --env build",
     "dev": "webpack --progress --colors --watch --env dev"
