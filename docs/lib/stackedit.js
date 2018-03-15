@@ -80,14 +80,28 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var style = document.createElement('style');
-style.type = 'text/css';
-style.innerHTML = '\n.stackedit-iframe-open {\n  overflow: hidden;\n}\n\n.stackedit-button-wrapper a {\n  color: #0c93e4;\n  font-size: 0.85em;\n  text-decoration: underline;\n}\n\n.stackedit-button-wrapper a:hover,\n.stackedit-button-wrapper a:focus {\n  text-decoration: none;\n}\n\n.stackedit-button-wrapper img {\n  width: 1.33em;\n  height: 1.33em;\n  vertical-align: text-bottom;\n  margin-left: 0.33em;\n}\n';
-document.head.appendChild(style);
+var styleContent = '\n.stackedit-no-overflow {\n  overflow: hidden;\n}\n\n.stackedit-container {\n  background-color: rgba(160, 160, 160, 0.5);\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 9999;\n}\n\n.stackedit-hidden-container {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n  left: -99px;\n}\n\n.stackedit-iframe-container {\n  background-color: #fff;\n  position: absolute;\n  margin: auto;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  height: 95%;\n  width: 90%;\n  max-width: 1280px;\n  border-radius: 2px;\n  overflow: hidden;\n}\n\n.stackedit-iframe {\n  position: absolute;\n  height: 100%;\n  width: 100%;\n  border: 0;\n}\n\n@media (max-width: 920px) {\n  .stackedit-iframe-container {\n    width: 95%;\n  }\n}\n\n@media (max-width: 740px) {\n  .stackedit-iframe-container {\n    height: 100%;\n    width: 100%;\n    border-radius: 0;\n  }\n}\n\n.stackedit-close-button {\n  color: #777;\n  position: absolute;\n  width: 38px;\n  height: 36px;\n  margin: 4px;\n  padding: 0 4px;\n  text-align: center;\n  vertical-align: middle;\n  border-radius: 2px;\n  text-decoration: none;\n}\n';
+
+var _createStyle = function createStyle() {
+  var styleEl = document.createElement('style');
+  styleEl.type = 'text/css';
+  styleEl.innerHTML = styleContent;
+  document.head.appendChild(styleEl);
+  _createStyle = function createStyle() {}; // Create style only once
+};
+
+var containerHtml = '\n<div class="stackedit-iframe-container">\n  <iframe class="stackedit-iframe"></iframe>\n  <a href="javascript:void(0)" class="stackedit-close-button" title="Close">\n    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="100%" height="100%">\n      <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />\n    </svg>\n  </a>\n</div>\n';
+
+var origin = location.protocol + '//' + location.host;
+var urlParser = document.createElement('a');
 
 var Stackedit = function () {
   function Stackedit() {
@@ -97,26 +111,142 @@ var Stackedit = function () {
 
     _classCallCheck(this, Stackedit);
 
-    this.options = {};
-    this.open = false;
+    this.$options = {
+      url: 'https://stackedit.io/app'
+    };
+    this.$listeners = {};
 
     // Override options
     Object.keys(opts).forEach(function (key) {
-      _this.options[key] = opts[key];
+      _this.$options[key] = opts[key];
     });
   }
 
+  // For emitting events
+
+
   _createClass(Stackedit, [{
-    key: 'open',
-    value: function open() {
+    key: '$trigger',
+    value: function $trigger(type, payload) {
+      var listeners = this.$listeners[type] || [];
+      // Use setTimeout as a way to ignore errors
+      listeners.forEach(function (listener) {
+        return setTimeout(function () {
+          return listener(payload);
+        }, 1);
+      });
+    }
+  }, {
+    key: 'on',
+    value: function on(type, listener) {
+      var listeners = this.$listeners[type] || [];
+      listeners.push(listener);
+      this.$listeners[type] = listeners;
+    }
+  }, {
+    key: 'off',
+    value: function off(type, listener) {
+      var listeners = this.$listeners[type] || [];
+      var idx = listeners.indexOf(listener);
+      if (idx >= 0) {
+        listeners.splice(idx, 1);
+        if (listeners.length) {
+          this.$listeners[type] = listeners;
+        } else {
+          delete this.$listeners[type];
+        }
+      }
+    }
+  }, {
+    key: 'openFile',
+    value: function openFile() {
+      var _this2 = this;
+
+      var file = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var silent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
       // Close before opening a new iframe
       this.close();
+
+      // Make StackEdit URL
+      urlParser.href = this.$options.url;
+      this.$origin = urlParser.protocol + '//' + urlParser.host; // Save StackEdit origin
+      var content = file.content || {};
+      var params = {
+        origin: origin,
+        fileName: file.name,
+        contentText: content.text,
+        contentProperties: content.yamlProperties,
+        silent: silent
+      };
+      var serializedParams = Object.keys(params).map(function (key) {
+        return key + '=' + encodeURIComponent(params[key] || '');
+      }).join('&');
+      urlParser.hash = '#' + serializedParams;
+
+      // Make the iframe
+      _createStyle();
+      this.$containerEl = document.createElement('div');
+      this.$containerEl.className = silent ? 'stackedit-hidden-container' : 'stackedit-container';
+      this.$containerEl.innerHTML = containerHtml;
+      document.body.appendChild(this.$containerEl);
+
+      // Load StackEdit in the iframe
+      this.$iframeEl = this.$containerEl.querySelector('iframe');
+      this.$iframeEl.src = urlParser.href;
+
+      // Add close button handler
+      var closeButton = this.$containerEl.querySelector('a');
+      closeButton.addEventListener('click', function () {
+        return _this2.close();
+      });
+
+      // Add message handler
+      this.$messageHandler = function (event) {
+        if (event.origin === _this2.$origin && event.source === _this2.$iframeEl.contentWindow) {
+          switch (event.data.type) {
+            case 'ready':
+              // Remove close button as Stackedit has its own one
+              closeButton.parentNode.removeChild(closeButton);
+              break;
+            case 'fileChange':
+              // Trigger fileChange event
+              _this2.$trigger('fileChange', event.data.payload);
+              if (silent) {
+                _this2.close();
+              }
+              break;
+            case 'close':
+            default:
+              _this2.close();
+          }
+        }
+      };
+      window.addEventListener('message', this.$messageHandler);
+
+      if (!silent) {
+        // Remove body scrollbars
+        document.body.className += ' stackedit-no-overflow';
+      }
     }
   }, {
     key: 'close',
     value: function close() {
-      if (this.open) {
-        // do close
+      if (this.$messageHandler) {
+        // Clean everything
+        window.removeEventListener('message', this.$messageHandler);
+        document.body.removeChild(this.$containerEl);
+
+        // Release memory
+        this.$messageHandler = null;
+        this.$containerEl = null;
+        this.$iframeEl = null;
+
+        // Restore body scrollbars
+        document.body.className = document.body.className.replace(/\sstackedit-no-overflow\b/, '');
+
+        // Trigger close event
+        this.$trigger('close');
       }
     }
   }]);
@@ -124,7 +254,8 @@ var Stackedit = function () {
   return Stackedit;
 }();
 
-module.exports = Stackedit;
+exports.default = Stackedit;
+module.exports = exports['default'];
 
 /***/ })
 /******/ ]);

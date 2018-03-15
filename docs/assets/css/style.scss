@@ -2,14 +2,27 @@
 ---
 
 @import "{{ site.theme }}";
-@import url('https://fonts.googleapis.com/css?family=Lato');
+@import url('https://fonts.googleapis.com/css?family=Lato|Roboto+Mono');
 
 body {
-  font-family: 'Lato', sans-serif;
+  font-family: Lato, sans-serif;
+  -webkit-font-variant-ligatures: common-ligatures;
+  font-variant-ligatures: common-ligatures;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+textarea {
+  border-radius: 2px;
+  border-color: #999;
+  width: 280px;
+  min-width: 280px;
+  height: 80px;
+  min-height: 80px;
 }
 
 .page-header {
-  background: #2c2c2c;
+  background: #333;
 
   &::before {
     content: '';
@@ -17,5 +30,38 @@ body {
     background: no-repeat center url('../../icon.svg');
     background-size: contain;
     height: 110px;
+  }
+}
+
+.main-content {
+  h1, h2, h3, h4, h5, h6 {
+    color: #136a9e;
+  }
+
+  code {
+    font-family: 'Roboto Mono', monospace;
+  }
+}
+
+a {
+  color: #0c93e4;
+}
+
+.stackedit-button-wrapper {
+  a {
+    font-size: 0.8em;
+    text-decoration: underline;
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+
+  img {
+    width: 1.6em;
+    height: 1.6em;
+    vertical-align: bottom;
+    margin-right: 0.33em;
   }
 }
