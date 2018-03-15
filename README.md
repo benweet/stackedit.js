@@ -19,7 +19,7 @@ npm run build
 
 ### Quick start
 
-This will bind StackEdit to a `textarea`:
+Bind StackEdit to a `textarea`:
 
 ```js
 // Import the lib
@@ -28,7 +28,7 @@ import Stackedit from 'stackedit-js';
 // Get the textarea
 const el = document.querySelector('textarea');
 
-// Construct a new Stackedit object
+// Create the Stackedit object
 const stackedit = new Stackedit();
 
 // Open the iframe
