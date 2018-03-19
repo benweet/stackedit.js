@@ -62,7 +62,7 @@ To open StackEdit, create a `Stackedit` object and call `openFile()`.
 
 - `close` once the iframe is closed.
 
-  **Tip:** Call `stackedit.close()` to force closing the iframe.
+  **Tip:** Call `stackedit.close()` to force close the iframe.
 
 ## Conversion service
 
