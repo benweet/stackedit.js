@@ -88,7 +88,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var styleContent = '\n.stackedit-no-overflow {\n  overflow: hidden;\n}\n\n.stackedit-container {\n  background-color: rgba(160, 160, 160, 0.5);\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 9999;\n}\n\n.stackedit-hidden-container {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n  left: -99px;\n}\n\n.stackedit-iframe-container {\n  background-color: #fff;\n  position: absolute;\n  margin: auto;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  height: 95%;\n  width: 90%;\n  max-width: 1280px;\n  border-radius: 2px;\n  overflow: hidden;\n}\n\n.stackedit-iframe {\n  position: absolute;\n  height: 100%;\n  width: 100%;\n  border: 0;\n}\n\n@media (max-width: 920px) {\n  .stackedit-iframe-container {\n    width: 95%;\n  }\n}\n\n@media (max-width: 740px) {\n  .stackedit-iframe-container {\n    height: 100%;\n    width: 100%;\n    border-radius: 0;\n  }\n}\n\n.stackedit-close-button {\n  color: #777;\n  position: absolute;\n  width: 38px;\n  height: 36px;\n  margin: 4px;\n  padding: 0 4px;\n  text-align: center;\n  vertical-align: middle;\n  border-radius: 2px;\n  text-decoration: none;\n}\n';
+var styleContent = '\n.stackedit-no-overflow {\n  overflow: hidden;\n}\n\n.stackedit-container {\n  background-color: rgba(160, 160, 160, 0.5);\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 9999;\n}\n\n.stackedit-hidden-container {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n  left: -99px;\n}\n\n.stackedit-iframe-container {\n  background-color: #fff;\n  position: absolute;\n  margin: auto;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  height: 95%;\n  width: 90%;\n  max-width: 1280px;\n  border-radius: 2px;\n  overflow: hidden;\n}\n\n@media (max-width: 920px) {\n  .stackedit-iframe-container {\n    width: 95%;\n  }\n}\n\n@media (max-width: 740px) {\n  .stackedit-iframe-container {\n    height: 100%;\n    width: 100%;\n    border-radius: 0;\n  }\n}\n\n.stackedit-iframe {\n  position: absolute;\n  height: 100%;\n  width: 100%;\n  border: 0;\n}\n\n.stackedit-close-button {\n  color: #777;\n  position: absolute;\n  width: 38px;\n  height: 36px;\n  margin: 4px;\n  padding: 0 4px;\n  text-align: center;\n  vertical-align: middle;\n  border-radius: 2px;\n  text-decoration: none;\n}\n';
 
 var _createStyle = function createStyle() {
   var styleEl = document.createElement('style');
@@ -176,7 +176,8 @@ var Stackedit = function () {
         origin: origin,
         fileName: file.name,
         contentText: content.text,
-        contentProperties: content.yamlProperties,
+        contentProperties: !content.yamlProperties && content.properties ? JSON.stringify(content.properties) // Use JSON serialized properties as YAML properties
+        : content.yamlProperties,
         silent: silent
       };
       var serializedParams = Object.keys(params).map(function (key) {
@@ -192,8 +193,8 @@ var Stackedit = function () {
       document.body.appendChild(this.$containerEl);
 
       // Load StackEdit in the iframe
-      this.$iframeEl = this.$containerEl.querySelector('iframe');
-      this.$iframeEl.src = urlParser.href;
+      var iframeEl = this.$containerEl.querySelector('iframe');
+      iframeEl.src = urlParser.href;
 
       // Add close button handler
       var closeButton = this.$containerEl.querySelector('a');
@@ -203,10 +204,10 @@ var Stackedit = function () {
 
       // Add message handler
       this.$messageHandler = function (event) {
-        if (event.origin === _this2.$origin && event.source === _this2.$iframeEl.contentWindow) {
+        if (event.origin === _this2.$origin && event.source === iframeEl.contentWindow) {
           switch (event.data.type) {
             case 'ready':
-              // Remove close button as Stackedit has its own one
+              // StackEdit has its own one close button
               closeButton.parentNode.removeChild(closeButton);
               break;
             case 'fileChange':
@@ -240,7 +241,6 @@ var Stackedit = function () {
         // Release memory
         this.$messageHandler = null;
         this.$containerEl = null;
-        this.$iframeEl = null;
 
         // Restore body scrollbars
         document.body.className = document.body.className.replace(/\sstackedit-no-overflow\b/, '');
