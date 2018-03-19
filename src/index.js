@@ -143,7 +143,9 @@ class Stackedit {
       origin,
       fileName: file.name,
       contentText: content.text,
-      contentProperties: content.yamlProperties,
+      contentProperties: !content.yamlProperties && content.properties
+        ? JSON.stringify(content.properties) // Use JSON serialized properties as YAML properties
+        : content.yamlProperties,
       silent,
     };
     const serializedParams = Object.keys(params)

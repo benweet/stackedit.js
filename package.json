@@ -8,7 +8,7 @@
     "build": "webpack --env dev && webpack --env build",
     "dev": "webpack --progress --colors --watch --env dev",
     "test": "npm run lint",
-    "preversion": "npm run test",
+    "preversion": "npm run build",
     "postversion": "git push origin master --tags && npm publish",
     "patch": "npm version patch -m \"Tag v%s\"",
     "minor": "npm version minor -m \"Tag v%s\"",

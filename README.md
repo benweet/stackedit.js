@@ -22,13 +22,13 @@ npm run build
 Bind StackEdit to a `textarea`:
 
 ```js
-// Import the lib
+// Import the lib.
 import Stackedit from 'stackedit-js';
 
-// Get the textarea
+// Get the textarea.
 const el = document.querySelector('textarea');
 
-// Create the Stackedit object
+// Create the Stackedit object.
 const stackedit = new Stackedit();
 
 // Open the iframe
@@ -39,7 +39,7 @@ stackedit.openFile({
   }
 });
 
-// Listen to StackEdit and apply the changes to the textarea.
+// Listen to StackEdit events and apply the changes to the textarea.
 stackedit.on('fileChange', (file) => {
   el.value = file.content.text;
 });

@@ -86,33 +86,35 @@ stackedit.on('fileChange', (file) => {
 
 ## Custom properties
 
-Pass YAML properties to enable/disable Markdown extensions. To open a CommonMark file for example:
+Pass file properties to enable/disable Markdown extensions. To open a CommonMark file for example:
 
 ```javascript
 stackedit.openFile({
   name: 'Filename',
   content: {
     text: 'Hello **CommonMark** writer!',
-    yamlProperties: `
-
-extensions:
-  markdown:
-    abbr: false
-    breaks: false
-    deflist: false
-    del: false
-    footnote: false
-    linkify: false
-    sub: false
-    sup: false
-    table: false
-    typographer: false
-  katex:
-    enabled: false
-  mermaid:
-    enabled: false
-
-    `
+    properties: {
+      extensions: {
+        markdown: {
+          abbr: false,
+          breaks: false,
+          deflist: false,
+          del: false,
+          footnote: false,
+          linkify: false,
+          sub: false,
+          sup: false,
+          table: false,
+          typographer: false
+        },
+        katex: {
+          enabled: false
+        },
+        mermaid: {
+          enabled: false
+        }
+      }
+    }
   }
 });
 ```
