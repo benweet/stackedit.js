@@ -10,9 +10,9 @@
     "test": "npm run lint",
     "preversion": "npm run test",
     "postversion": "git push origin master --tags && npm publish",
-    "patch": "npm version patch -m \"Tag v%s\"",
-    "minor": "npm version minor -m \"Tag v%s\"",
-    "major": "npm version major -m \"Tag v%s\""
+    "patch": "npm run build && npm version patch -m \"Tag v%s\"",
+    "minor": "npm run build && npm version minor -m \"Tag v%s\"",
+    "major": "npm run build && npm version major -m \"Tag v%s\""
   },
   "author": "Benoit Schweblin",
   "license": "MIT",
