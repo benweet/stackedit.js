@@ -13,7 +13,7 @@ Because it runs StackEdit in an iframe, **stackedit.js** is lightweight and has 
 Add the script to your web page.
 
 ```html
-<script src="https://unpkg.com/stackedit-js@1.0.2/docs/lib/stackedit.min.js"></script>
+<script src="https://unpkg.com/stackedit-js@1.0.3/docs/lib/stackedit.min.js"></script>
 ```
 
 Or include it in your project
@@ -25,11 +25,7 @@ npm install stackedit-js
 and import it into your script.
 
 ```javascript
-// ES6 style
 import Stackedit from 'stackedit-js';
-
-// CommonJS style
-const Stackedit = require('stackedit-js');
 ```
 
 ## Usage
@@ -106,12 +102,6 @@ stackedit.openFile({
           sup: false,
           table: false,
           typographer: false
-        },
-        katex: {
-          enabled: false
-        },
-        mermaid: {
-          enabled: false
         }
       }
     }

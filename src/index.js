@@ -41,19 +41,24 @@ const styleContent = `
   }
 }
 
+.stackedit-iframe {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border: 0;
+  border-radius: 2px;
+}
+
 @media (max-width: 740px) {
   .stackedit-iframe-container {
     height: 100%;
     width: 100%;
     border-radius: 0;
   }
-}
 
-.stackedit-iframe {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  border: 0;
+  .stackedit-iframe {
+    border-radius: 0;
+  }
 }
 
 .stackedit-close-button {
