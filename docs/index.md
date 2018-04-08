@@ -38,7 +38,7 @@ To open StackEdit, create a `Stackedit` object and call `openFile()`.
 
   // Open the iframe
   stackedit.openFile({
-    name: 'Filename', // with a filename
+    name: 'Filename', // with an optional filename
     content: {
       text: el.value // and the Markdown content.
     }
@@ -82,7 +82,7 @@ stackedit.on('fileChange', (file) => {
 
 ## Custom properties
 
-Pass file properties to enable/disable Markdown extensions. To open a CommonMark file for example:
+Pass file properties to configure the Markdown engine. To open a CommonMark file for example:
 
 ```javascript
 stackedit.openFile({
@@ -91,18 +91,7 @@ stackedit.openFile({
     text: 'Hello **CommonMark** writer!',
     properties: {
       extensions: {
-        markdown: {
-          abbr: false,
-          breaks: false,
-          deflist: false,
-          del: false,
-          footnote: false,
-          linkify: false,
-          sub: false,
-          sup: false,
-          table: false,
-          typographer: false
-        }
+        preset: 'commonmark'
       }
     }
   }
@@ -114,9 +103,9 @@ stackedit.openFile({
 **stackedit.js** uses [https://stackedit.io/app](https://stackedit.io/app) as the default StackEdit URL. Though you can provide a custom URL to the `Stackedit` constructor.
 
 ```js
-  const stackedit = new Stackedit({
-    url: 'https://hostname/app'
-  });
+const stackedit = new Stackedit({
+  url: 'https://hostname/app'
+});
 ```
 
 
