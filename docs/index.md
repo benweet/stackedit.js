@@ -13,7 +13,7 @@ Because it runs StackEdit in an iframe, **stackedit.js** is lightweight and has 
 Add the script to your web page.
 
 ```html
-<script src="https://unpkg.com/stackedit-js@1.0.3/docs/lib/stackedit.min.js"></script>
+<script src="https://unpkg.com/stackedit-js@1.0.4/docs/lib/stackedit.min.js"></script>
 ```
 
 Or include it in your project
