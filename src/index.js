@@ -57,6 +57,7 @@ const styleContent = `
 
 .stackedit-close-button {
   position: absolute !important;
+  box-sizing: border-box !important;
   width: 38px !important;
   height: 36px !important;
   margin: 4px !important;
