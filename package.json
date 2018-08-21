@@ -1,6 +1,6 @@
 {
   "name": "stackedit-js",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Produce universal library with webpack and es6",
   "main": "docs/lib/stackedit.js",
   "scripts": {
