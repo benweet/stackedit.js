@@ -10,6 +10,9 @@
 # install dependencies
 npm install
 
+# find wheather npm installed or not
+npm -v
+
 # watch and build for dev
 npm run dev
 
